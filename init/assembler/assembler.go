@@ -1,0 +1,94 @@
+package assembler
+
+import (
+	"os"
+	"os/signal"
+	"syscall"
+
+	"github.com/nenecchuu/lizbeth-be-core/handler/rest"
+	"github.com/nenecchuu/lizbeth-be-core/handler/telegram_listener"
+	"github.com/nenecchuu/lizbeth-be-core/init/initiator"
+	"github.com/nenecchuu/lizbeth-be-core/init/service"
+)
+
+type NewWebHandler func(o *rest.Opts) rest.WebHandler
+type NewTelegramListenerHandler func(o *telegram_listener.Opts) telegram_listener.TelegramListenerHandler
+
+type assembler struct {
+	Initiator                 initiator.InitiatorManager
+	NewWebHandler             NewWebHandler
+	webHandler                rest.WebHandler
+	restService               *service.RestService
+	NewChatbotListenerHandler NewTelegramListenerHandler
+	chatbotListenerService    *service.ChatbotListenerService
+	chatbotListenerHanlder    telegram_listener.TelegramListenerHandler
+	term                      chan os.Signal
+}
+
+type AssemblerManager interface {
+	BuildService(configPath string) AssemblerManager
+
+	AssembleWebApplication() AssemblerManager
+	RunWebApplication()
+
+	AssembleTelegramListernerApplication() AssemblerManager
+	RunTelegramListenerApplication()
+	ListenErrorWebApp() <-chan error
+
+	TerminateSignal() chan os.Signal
+}
+
+func NewAssembler() AssemblerManager {
+	return &assembler{
+		Initiator:                 initiator.New(),
+		NewWebHandler:             rest.New,
+		NewChatbotListenerHandler: telegram_listener.New,
+	}
+}
+
+func (a *assembler) BuildService(configPath string) AssemblerManager {
+	cfg := a.Initiator.InitConfig(configPath)
+	infra := a.Initiator.InitInfrastructure(cfg)
+	repo := a.Initiator.InitRepository(cfg, infra)
+	integration := a.Initiator.InitIntegration(cfg, infra)
+	uc := a.Initiator.InitUsecase(cfg, infra, repo, integration)
+	rest := a.Initiator.InitRestHandler(cfg, infra, uc)
+	chatbothandler := a.Initiator.InitChatbotHandler(cfg, infra, integration, uc)
+	mw := a.Initiator.InitMiddleware(cfg, infra, repo)
+
+	restsvc := a.Initiator.InitRestService(cfg, infra, rest, uc, mw)
+	chabotsvc := a.Initiator.InitChatbotListenerService(cfg, chatbothandler, infra, uc)
+
+	a.restService = restsvc
+	a.chatbotListenerService = chabotsvc
+
+	return a
+}
+
+func (a *assembler) AssembleWebApplication() AssemblerManager {
+	a.webHandler = a.assembleWeb(a.restService)
+	return a
+}
+
+func (a *assembler) RunWebApplication() {
+	a.runWebServer()
+}
+
+func (a *assembler) AssembleTelegramListernerApplication() AssemblerManager {
+	a.chatbotListenerHanlder = a.assembleChatbotListener(a.chatbotListenerService)
+	return a
+}
+
+func (a *assembler) RunTelegramListenerApplication() {
+	a.runTelegramListener()
+}
+
+func (a *assembler) ListenErrorWebApp() <-chan error {
+	return a.webHandler.ListenError()
+}
+
+func (a *assembler) TerminateSignal() chan os.Signal {
+	a.term = make(chan os.Signal)
+	signal.Notify(a.term, os.Interrupt, syscall.SIGTERM)
+	return a.term
+}

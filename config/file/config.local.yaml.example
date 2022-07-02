@@ -1,0 +1,43 @@
+rest:
+  listenAddress: "localhost"
+  port: 8000
+  enableSwagger: true
+  gracefulTimeout: 10
+  readTimeout: 10
+  writeTimeout: 10
+  appName: "Shipdeo Balance"
+
+mongo:
+  uri: mongodb://127.0.0.1:27017
+  db: lizbeth
+  connectionTimeout: 10
+  pingTimeout: 3
+
+spotify:
+  credentials:
+    scope: ""
+    callbackUrl: "http://localhost:8000/auth/callback"
+    clientId: ""
+    clientSecret: ""
+  coreApi:
+    httpConfig:
+      baseUrl: "https://api.spotify.com/v1"
+      timeout: 3
+      retryCount: 3
+    endpoints:
+      queue_track: "me/player/queue"
+      get_user_info: "me"
+  authApi:
+    httpConfig:
+      baseUrl: "https://accounts.spotify.com"
+      timeout: 3
+      retryCount: 3
+    endpoints:
+      authorize: "authorize"
+      token: "api/token"
+
+telegramBotApi:
+  token: ""
+  debug: true
+  timeout: 60
+  updateOffset: 0
