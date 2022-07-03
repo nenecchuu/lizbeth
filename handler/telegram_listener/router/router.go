@@ -47,6 +47,8 @@ func (c *ChatbotRouter) HandleMessage(message string, ci gm.ChatInfo) {
 		case string(constants.ChatbotUserRoleGuest):
 			c.handlers.ChoreChatbotHandler.HandleInitConversation(ci)
 		}
+	case string(constants.ChatbotCommandMessageCreateSession):
+		c.handlers.SessionChatbotHandler.HandleCreateSession(ci)
 	default:
 		c.handlers.ChoreChatbotHandler.HandleWelcome(ci)
 	}

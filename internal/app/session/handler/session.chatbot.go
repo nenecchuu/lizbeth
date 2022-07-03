@@ -8,11 +8,11 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func (x *ChatbotModule) HandleHostAuthentication(ci gm.ChatInfo) {
-	ctx, span := tracer.StartSpan(context.Background(), "auth.chatbot.HandleHostAuthentication", nil)
+func (x *ChatbotModule) HandleCreateSession(ci gm.ChatInfo) {
+	ctx, span := tracer.StartSpan(context.Background(), "session.chatbot.HandleCreateSession", nil)
 	defer span.End()
 
-	err := x.authUsecase.ProcessHostAuthentication(ctx, ci)
+	err := x.sessionUsecase.ProcessCreateNewSession(ctx, ci)
 
 	if err != nil {
 		log.Err(err).Msg(err.Error())

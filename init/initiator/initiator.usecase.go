@@ -4,7 +4,8 @@ import (
 	"github.com/nenecchuu/lizbeth-be-core/config"
 	"github.com/nenecchuu/lizbeth-be-core/init/service"
 	auc "github.com/nenecchuu/lizbeth-be-core/internal/app/auth/usecase"
-	cch "github.com/nenecchuu/lizbeth-be-core/internal/app/chore/usecase"
+	cuc "github.com/nenecchuu/lizbeth-be-core/internal/app/chore/usecase"
+	suc "github.com/nenecchuu/lizbeth-be-core/internal/app/session/usecase"
 )
 
 func (i *Initiator) InitUsecase(cfg *config.MainConfig, infra *service.Infrastructure, repos *service.Repositories, integration *service.Integration) *service.Usecases {
@@ -15,13 +16,22 @@ func (i *Initiator) InitUsecase(cfg *config.MainConfig, infra *service.Infrastru
 		ChatbotManager:     integration.TelegramBotManager,
 	})
 
-	chore := cch.New(cch.Opts{
+	chore := cuc.New(cuc.Opts{
 		UserRepository: repos.UserRepository,
 		ChatbotManager: integration.TelegramBotManager,
 	})
 
+	session := suc.New(suc.Opts{
+		UserRepository:     repos.UserRepository,
+		SessionRepository:  repos.SessionRepository,
+		ChatbotManager:     integration.TelegramBotManager,
+		SpotifyAuthApiCall: integration.SpotifyApiCall,
+		SnowflakeManager:   infra.Snowflake,
+	})
+
 	return &service.Usecases{
-		AuthUsecase:  auth,
-		ChoreUsecase: chore,
+		AuthUsecase:    auth,
+		ChoreUsecase:   chore,
+		SessionUsecase: session,
 	}
 }

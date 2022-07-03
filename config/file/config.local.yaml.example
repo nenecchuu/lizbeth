@@ -13,6 +13,10 @@ mongo:
   connectionTimeout: 10
   pingTimeout: 3
 
+snowflake:
+  epoch: 1626670674000
+  pod_id: 1
+
 spotify:
   credentials:
     scope: ""

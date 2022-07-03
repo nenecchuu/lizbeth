@@ -5,6 +5,7 @@ type MainConfig struct {
 	Mongo          MongoConfig          `fig:"mongo"`
 	Spotify        SpotifyConfig        `fig:"spotify"`
 	TelegramBotApi TelegramBotApiConfig `fig:"telegramBotApi"`
+	Snowflake      SnowflakeConfig      `fig:"snowflake"`
 }
 
 type (
@@ -22,6 +23,10 @@ type (
 		DB                string `yaml:"db"`
 		ConnectionTimeout int    `yaml:"connectionTimeout"`
 		PingTimeout       int    `yaml:"pingTimeout"`
+	}
+	SnowflakeConfig struct {
+		Epoch int64 `fig:"epoch"`
+		PodId int64 `fig:"pod_id"`
 	}
 	// SECTION SPOTIFY
 	SpotifyApiCredentials struct {

@@ -4,6 +4,6 @@ import (
 	gm "github.com/nenecchuu/lizbeth-be-core/internal/model"
 )
 
-type AuthChatbotHandler interface {
-	HandleHostAuthentication(ci gm.ChatInfo)
+type SessionChatbotHandler interface {
+	HandleCreateSession(ci gm.ChatInfo)
 }

@@ -10,14 +10,21 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func (x *Module) sendTextMessage(ctx context.Context, message string, chat_id int64) error {
+func (x *Module) sendTextMessage(ctx context.Context, message string, chat_id string) error {
 	_, span := tracer.StartSpan(ctx, "chatbot.telegram.SendMessage", nil)
 	defer span.End()
 	var (
 		err error
+		cid int64
 	)
 
-	msg := tgbotapi.NewMessage(chat_id, message)
+	cid, err = strconv.ParseInt(chat_id, 10, 64)
+	if err != nil {
+		log.Err(err).Msg(err.Error())
+		return err
+	}
+
+	msg := tgbotapi.NewMessage(cid, message)
 
 	_, err = x.telegramBotApi.Send(msg)
 

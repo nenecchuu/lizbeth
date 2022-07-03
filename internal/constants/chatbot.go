@@ -9,9 +9,9 @@ const (
 type ChatbotCommandMessage string
 
 const (
-	ChatbotCommandMessageStart     ChatbotCommandMessage = "start"
-	ChatbotCommandMessageEnterRole ChatbotCommandMessage = "enter_role_as"
-	ChatbotCommandMessageSession   ChatbotCommandMessage = "session"
+	ChatbotCommandMessageStart         ChatbotCommandMessage = "start"
+	ChatbotCommandMessageEnterRole     ChatbotCommandMessage = "enter_role_as"
+	ChatbotCommandMessageCreateSession ChatbotCommandMessage = "/create_session"
 )
 
 type ChatbotUserRole string
@@ -19,10 +19,4 @@ type ChatbotUserRole string
 const (
 	ChatbotUserRoleGuest ChatbotUserRole = "guest"
 	ChatbotUserRoleHost  ChatbotUserRole = "host"
-)
-
-type ChatbotSessionCommand string
-
-const (
-	ChatbotSessionCommandInit ChatbotSessionCommand = "init"
 )

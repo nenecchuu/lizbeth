@@ -131,10 +131,20 @@ func (x *Module) ProcessHostAuthentication(ctx context.Context, ci gm.ChatInfo) 
 		return err
 	}
 
-	err = x.chatbotManager.SendHostActionsMessage(ctx, ci.ChatId)
+	if udata.ActiveSessionId == primitive.NilObjectID {
+		err = x.chatbotManager.SendNoActiveSessionMessage(ctx, ci.ChatId)
 
-	if err != nil {
-		log.Err(err).Msg(err.Error())
+		if err != nil {
+			log.Err(err).Msg(err.Error())
+			return err
+		}
+	} else {
+		err = x.chatbotManager.SendHostActionsMessage(ctx, ci.ChatId)
+
+		if err != nil {
+			log.Err(err).Msg(err.Error())
+			return err
+		}
 	}
 
 	return err

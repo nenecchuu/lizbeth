@@ -35,11 +35,11 @@ var (
 			},
 		},
 	}
-	HostActionsRows = []model.TelegramInlineKeyboardRow{
+	NoActiveSessionRows = []model.TelegramInlineKeyboardRow{
 		{
 			Data: []model.TelegramInlineKeyboardData{
 				{
-					Value: fmt.Sprintf("%s:%s", gc.ChatbotCommandMessageSession, gc.ChatbotSessionCommandInit),
+					Value: string(gc.ChatbotCommandMessageCreateSession),
 					Text:  "Create New Session",
 				},
 			},

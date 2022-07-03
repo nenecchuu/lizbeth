@@ -10,12 +10,13 @@ import (
 )
 
 type UserNoSqlSchema struct {
-	Id             primitive.ObjectID           `bson:"_id"`
-	Name           string                       `bson:"name"`
-	ChatId         string                       `bson:"chat_id"`
-	ChatbotUserId  string                       `bson:"chatbot_user_id"`
-	ChatbotChannel constants.ChatbotChannelEnum `bson:"chatbot_channel"`
-	SpotifyData    UserSpotifyDataNoSqlSchema   `bson:"spotify_data"`
+	Id              primitive.ObjectID           `bson:"_id"`
+	Name            string                       `bson:"name"`
+	ChatId          string                       `bson:"chat_id"`
+	ChatbotUserId   string                       `bson:"chatbot_user_id"`
+	ChatbotChannel  constants.ChatbotChannelEnum `bson:"chatbot_channel"`
+	ActiveSessionId primitive.ObjectID           `bson:"active_session_id"`
+	SpotifyData     UserSpotifyDataNoSqlSchema   `bson:"spotify_data"`
 }
 
 type UserSpotifyDataNoSqlSchema struct {

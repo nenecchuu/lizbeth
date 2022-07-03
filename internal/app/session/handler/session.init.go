@@ -1,19 +1,19 @@
 package handler
 
 import (
-	"github.com/nenecchuu/lizbeth-be-core/internal/app/auth/usecase"
+	"github.com/nenecchuu/lizbeth-be-core/internal/app/session/usecase"
 )
 
 type ChatbotModule struct {
-	authUsecase usecase.AuthUsecase
+	sessionUsecase usecase.SessionUsecase
 }
 
 type ChatbotOpts struct {
-	AuthUsecase usecase.AuthUsecase
+	SessionUsecase usecase.SessionUsecase
 }
 
 func NewChatbot(o ChatbotOpts) *ChatbotModule {
 	return &ChatbotModule{
-		authUsecase: o.AuthUsecase,
+		sessionUsecase: o.SessionUsecase,
 	}
 }
