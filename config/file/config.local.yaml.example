@@ -5,7 +5,7 @@ rest:
   gracefulTimeout: 10
   readTimeout: 10
   writeTimeout: 10
-  appName: "Shipdeo Balance"
+  appName: "Lizbeth"
 
 mongo:
   uri: mongodb://127.0.0.1:27017
