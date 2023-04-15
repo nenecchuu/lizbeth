@@ -9,9 +9,10 @@ const (
 type ChatbotCommandMessage string
 
 const (
-	ChatbotCommandMessageStart         ChatbotCommandMessage = "start"
-	ChatbotCommandMessageEnterRole     ChatbotCommandMessage = "enter_role_as"
+	ChatbotCommandMessageStart         ChatbotCommandMessage = "/start"
+	ChatbotCommandMessageEnterRole     ChatbotCommandMessage = "/enter_as"
 	ChatbotCommandMessageCreateSession ChatbotCommandMessage = "/create_session"
+	ChatbotCommandMessageQueueTrack    ChatbotCommandMessage = "/q"
 )
 
 type ChatbotUserRole string

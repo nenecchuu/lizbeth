@@ -2,7 +2,7 @@ package handler
 
 import (
 	"github.com/gofiber/fiber/v2"
-	gm "github.com/nenecchuu/lizbeth-be-core/internal/model"
+	cbm "github.com/nenecchuu/lizbeth-be-core/internal/model/chatbot"
 )
 
 type AuthRestHandler interface {
@@ -10,5 +10,5 @@ type AuthRestHandler interface {
 }
 
 type AuthChatbotHandler interface {
-	HandleHostAuthentication(ci gm.ChatInfo)
+	HandleHostAuthentication(ci cbm.ChatInfo)
 }

@@ -8,9 +8,10 @@ import (
 	ur "github.com/nenecchuu/lizbeth-be-core/internal/app/user/repository"
 )
 
-func (i *Initiator) InitRepository(cfg *config.MainConfig, infra *service.Infrastructure) *service.Repositories {
+func (i *Initiator) InitRepository(cfg *config.MainConfig, integration *service.Integration, infra *service.Infrastructure) *service.Repositories {
 	token := tr.New(tr.Opts{
-		MongoManager: infra.Mongo.Database,
+		SpotifyAuthApiCall: integration.SpotifyApiCall,
+		MongoManager:       infra.Mongo.Database,
 	})
 	user := ur.New(ur.Opts{
 		MongoManager: infra.Mongo.Database,

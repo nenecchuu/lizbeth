@@ -3,10 +3,10 @@ package usecase
 import (
 	"context"
 
-	gm "github.com/nenecchuu/lizbeth-be-core/internal/model"
+	cbm "github.com/nenecchuu/lizbeth-be-core/internal/model/chatbot"
 )
 
 type ChoreUsecase interface {
-	ProcessInitConversation(ctx context.Context, ci gm.ChatInfo) error
-	ProcessWelcome(ctx context.Context, ci gm.ChatInfo) error
+	ProcessInitConversation(ctx context.Context, ci cbm.ChatInfo) error
+	ProcessWelcome(ctx context.Context, ci cbm.ChatInfo) error
 }

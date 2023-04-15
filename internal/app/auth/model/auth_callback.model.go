@@ -27,7 +27,7 @@ func (x *LinkageCallback) ToSpotifyAuthorizeData() *sam.SpotifyAuthorizeData {
 }
 
 func (x *LinkageCallback) ParseFromChatMessage(msg string) *LinkageCallback {
-	splmsg := strings.Split(msg, ":")
+	splmsg := strings.Split(msg, " ")
 	return &LinkageCallback{
 		State: splmsg[0],
 		Code:  splmsg[1],

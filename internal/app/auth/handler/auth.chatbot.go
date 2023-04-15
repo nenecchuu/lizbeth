@@ -4,11 +4,11 @@ import (
 	"context"
 
 	"github.com/nenecchuu/arcana/tracer"
-	gm "github.com/nenecchuu/lizbeth-be-core/internal/model"
+	cbm "github.com/nenecchuu/lizbeth-be-core/internal/model/chatbot"
 	"github.com/rs/zerolog/log"
 )
 
-func (x *ChatbotModule) HandleHostAuthentication(ci gm.ChatInfo) {
+func (x *ChatbotModule) HandleHostAuthentication(ci cbm.ChatInfo) {
 	ctx, span := tracer.StartSpan(context.Background(), "auth.chatbot.HandleHostAuthentication", nil)
 	defer span.End()
 

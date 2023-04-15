@@ -1,10 +1,10 @@
 package handler
 
 import (
-	gm "github.com/nenecchuu/lizbeth-be-core/internal/model"
+	cbm "github.com/nenecchuu/lizbeth-be-core/internal/model/chatbot"
 )
 
 type ChoreChatbotHandler interface {
-	HandleInitConversation(ci gm.ChatInfo)
-	HandleWelcome(ci gm.ChatInfo)
+	HandleInitConversation(ci cbm.ChatInfo)
+	HandleWelcome(ci cbm.ChatInfo)
 }

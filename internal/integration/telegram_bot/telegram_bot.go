@@ -11,5 +11,6 @@ type TelegramBotIntegration interface {
 	SendLinkageSuccessMessage(ctx context.Context, chat_id string) error
 	SendHostActionsMessage(ctx context.Context, chat_id string) error
 	SendNoActiveSessionMessage(ctx context.Context, chat_id string) error
-	SendSessionCreatedMessage(ctx context.Context, chat_id string, session_code int64) error
+	SendSessionCreatedMessage(ctx context.Context, chat_id string, session_code string) error
+	SendErrorMessage(ctx context.Context, chat_id string, err_msg string) error
 }

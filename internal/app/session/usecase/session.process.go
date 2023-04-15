@@ -7,13 +7,13 @@ import (
 	"github.com/nenecchuu/arcana/tracer"
 	sm "github.com/nenecchuu/lizbeth-be-core/internal/app/session/model"
 	um "github.com/nenecchuu/lizbeth-be-core/internal/app/user/model"
-	gm "github.com/nenecchuu/lizbeth-be-core/internal/model"
+	cbm "github.com/nenecchuu/lizbeth-be-core/internal/model/chatbot"
 	"github.com/nenecchuu/lizbeth-be-core/internal/util"
 	"github.com/rs/zerolog/log"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func (x *Module) ProcessCreateNewSession(ctx context.Context, ci gm.ChatInfo) error {
+func (x *Module) ProcessCreateNewSession(ctx context.Context, ci cbm.ChatInfo) error {
 	ctx, span := tracer.StartSpan(ctx, "session.uc.ProcessCreateNewSession", nil)
 	defer span.End()
 
@@ -37,7 +37,7 @@ func (x *Module) ProcessCreateNewSession(ctx context.Context, ci gm.ChatInfo) er
 
 	data = &sm.SessionNoSqlSchema{
 		Id:        primitive.NewObjectIDFromTimestamp(now),
-		Code:      x.snowflakeManager.Generate().Int64(),
+		Code:      user.ChatbotUserId,
 		HostId:    user.Id,
 		CreatedAt: now,
 		ExpireAt:  now.Add(time.Hour * 24),

@@ -1,6 +1,8 @@
 package model
 
 import (
+	"time"
+
 	tm "github.com/nenecchuu/lizbeth-be-core/internal/app/token/model"
 	um "github.com/nenecchuu/lizbeth-be-core/internal/app/user/model"
 )
@@ -11,14 +13,14 @@ type LinkageCallbackQParams struct {
 }
 
 type LinkageCallbackBodyRes struct {
-	UserId        string `json:"_id"`
-	Name          string `json:"name"`
-	Email         string `json:"email"`
-	SpotifyUserId string `json:"spotify_user_id"`
-	ImageUrl      string `json:"image_url"`
-	AccessToken   string `json:"access_token"`
-	RefreshToken  string `json:"refresh_token"`
-	ExpiresIn     int    `json:"expires_in"`
+	UserId        string    `json:"_id"`
+	Name          string    `json:"name"`
+	Email         string    `json:"email"`
+	SpotifyUserId string    `json:"spotify_user_id"`
+	ImageUrl      string    `json:"image_url"`
+	AccessToken   string    `json:"access_token"`
+	RefreshToken  string    `json:"refresh_token"`
+	ExpiresAt     time.Time `json:"expires_in"`
 }
 
 func BuildLinkageCallbackBodyRes(user *um.UserNoSqlSchema, token *tm.TokenNoSqlSchema) *LinkageCallbackBodyRes {
@@ -30,7 +32,7 @@ func BuildLinkageCallbackBodyRes(user *um.UserNoSqlSchema, token *tm.TokenNoSqlS
 		ImageUrl:      user.SpotifyData.ImageUrl,
 		AccessToken:   token.AccessToken,
 		RefreshToken:  token.RefreshToken,
-		ExpiresIn:     token.ExpiresIn,
+		ExpiresAt:     token.ExpiresAt,
 	}
 }
 

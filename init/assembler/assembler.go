@@ -49,15 +49,15 @@ func NewAssembler() AssemblerManager {
 func (a *assembler) BuildService(configPath string) AssemblerManager {
 	cfg := a.Initiator.InitConfig(configPath)
 	infra := a.Initiator.InitInfrastructure(cfg)
-	repo := a.Initiator.InitRepository(cfg, infra)
 	integration := a.Initiator.InitIntegration(cfg, infra)
+	repo := a.Initiator.InitRepository(cfg, integration, infra)
 	uc := a.Initiator.InitUsecase(cfg, infra, repo, integration)
 	rest := a.Initiator.InitRestHandler(cfg, infra, uc)
 	chatbothandler := a.Initiator.InitChatbotHandler(cfg, infra, integration, uc)
-	mw := a.Initiator.InitMiddleware(cfg, infra, repo)
+	cmw := a.Initiator.InitChatbotMiddleware(cfg, infra, integration, repo)
 
-	restsvc := a.Initiator.InitRestService(cfg, infra, rest, uc, mw)
-	chabotsvc := a.Initiator.InitChatbotListenerService(cfg, chatbothandler, infra, uc)
+	restsvc := a.Initiator.InitRestService(cfg, infra, rest, uc)
+	chabotsvc := a.Initiator.InitChatbotListenerService(cfg, chatbothandler, infra, uc, cmw)
 
 	a.restService = restsvc
 	a.chatbotListenerService = chabotsvc

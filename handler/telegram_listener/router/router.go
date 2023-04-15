@@ -1,19 +1,22 @@
 package router
 
 import (
+	"context"
 	"strings"
 
 	"github.com/nenecchuu/lizbeth-be-core/init/service"
 	"github.com/nenecchuu/lizbeth-be-core/internal/constants"
-	gm "github.com/nenecchuu/lizbeth-be-core/internal/model"
+	cbm "github.com/nenecchuu/lizbeth-be-core/internal/model/chatbot"
 )
 
 type Options struct {
-	Handlers *service.ChatbotHandlers
+	Middleware *service.Middlewares
+	Handlers   *service.ChatbotHandlers
 }
 
 type ChatbotRouter struct {
-	handlers *service.ChatbotHandlers
+	middlewares *service.Middlewares
+	handlers    *service.ChatbotHandlers
 }
 
 func New(o *Options) *ChatbotRouter {
@@ -22,11 +25,12 @@ func New(o *Options) *ChatbotRouter {
 	}
 }
 
-func (c *ChatbotRouter) HandleMessage(message string, ci gm.ChatInfo) {
+func (c *ChatbotRouter) HandleMessage(ctx context.Context, message string, ci cbm.ChatInfo) {
 	var (
-		ms     = strings.Split(message, ":")
+		ms     = strings.Split(message, " ")
 		cmd    = ms[0]
 		cmdval string
+		// err    error
 	)
 
 	if len(ms) > 1 {
@@ -36,8 +40,6 @@ func (c *ChatbotRouter) HandleMessage(message string, ci gm.ChatInfo) {
 	ci.Message = message
 
 	switch cmd {
-	case "auth":
-		// c.handlers.AuthChatbotHandler.HandleLinkageCallback(ci)
 	case string(constants.ChatbotCommandMessageStart):
 		c.handlers.ChoreChatbotHandler.HandleInitConversation(ci)
 	case string(constants.ChatbotCommandMessageEnterRole):
@@ -49,6 +51,11 @@ func (c *ChatbotRouter) HandleMessage(message string, ci gm.ChatInfo) {
 		}
 	case string(constants.ChatbotCommandMessageCreateSession):
 		c.handlers.SessionChatbotHandler.HandleCreateSession(ci)
+	case string(constants.ChatbotCommandMessageQueueTrack):
+		cm, err := c.middlewares.ChatbotMiddleware.ParseAndValidateSenderData(ctx, ci)
+		if err == nil {
+			c.handlers.PlayerChatbotHandler.HandleQueueTrack(ci, cm)
+		}
 	default:
 		c.handlers.ChoreChatbotHandler.HandleWelcome(ci)
 	}

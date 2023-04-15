@@ -5,7 +5,7 @@ import (
 
 	"github.com/nenecchuu/lizbeth-be-core/internal/constants"
 	sam "github.com/nenecchuu/lizbeth-be-core/internal/integration/spotify_api/model"
-	gm "github.com/nenecchuu/lizbeth-be-core/internal/model"
+	cbm "github.com/nenecchuu/lizbeth-be-core/internal/model/chatbot"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -39,7 +39,7 @@ func (x *UserNoSqlSchema) AssignSpotifyData(spr *sam.SpotifyGetUserProfileBodyRe
 	}
 }
 
-func (x *UserNoSqlSchema) BuildFromChatInfo(ci gm.ChatInfo) *UserNoSqlSchema {
+func (x *UserNoSqlSchema) BuildFromChatInfo(ci cbm.ChatInfo) *UserNoSqlSchema {
 	return &UserNoSqlSchema{
 		Id:             primitive.NewObjectIDFromTimestamp(time.Now()),
 		ChatId:         ci.ChatId,

@@ -22,14 +22,14 @@ var (
 		{
 			Data: []model.TelegramInlineKeyboardData{
 				{
-					Value: fmt.Sprintf("%s:%s", gc.ChatbotCommandMessageEnterRole, gc.ChatbotUserRoleHost),
+					Value: fmt.Sprintf("%s %s", gc.ChatbotCommandMessageEnterRole, gc.ChatbotUserRoleHost),
 					Text:  "Host",
 				},
 			},
 		}, {
 			Data: []model.TelegramInlineKeyboardData{
 				{
-					Value: fmt.Sprintf("%s:%s", gc.ChatbotCommandMessageEnterRole, gc.ChatbotUserRoleHost),
+					Value: fmt.Sprintf("%s %s", gc.ChatbotCommandMessageEnterRole, gc.ChatbotUserRoleHost),
 					Text:  "Guest",
 				},
 			},

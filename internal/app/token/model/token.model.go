@@ -1,26 +1,34 @@
 package model
 
 import (
+	"time"
+
 	sam "github.com/nenecchuu/lizbeth-be-core/internal/integration/spotify_api/model"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type TokenNoSqlSchema struct {
+	Id           primitive.ObjectID `bson:"_id"`
 	UserId       primitive.ObjectID `bson:"user_id"`
 	AccessToken  string             `bson:"access_token"`
 	RefreshToken string             `bson:"refresh_token"`
-	ExpiresIn    int                `bson:"expires_in"`
+	ExpiresAt    time.Time          `bson:"expires_in"`
 	TokenType    string             `bson:"token_type"`
 	Scope        string             `bson:"scope"`
 	Issuer       string             `bson:"issuer"`
 }
 
 func (x *TokenNoSqlSchema) BuildFromSpotifyAuthorizeBodyRes(spr *sam.SpotifyAuthorizeBodyRes, userId primitive.ObjectID) *TokenNoSqlSchema {
+	if spr.RefreshToken == "" {
+		spr.RefreshToken = x.RefreshToken
+	}
+
 	return &TokenNoSqlSchema{
+		Id:           primitive.NewObjectIDFromTimestamp(time.Now()),
 		UserId:       userId,
 		AccessToken:  spr.AccessToken,
 		RefreshToken: spr.RefreshToken,
-		ExpiresIn:    spr.ExpiresIn,
+		ExpiresAt:    time.Now().Add(time.Duration(spr.ExpiresIn) * time.Second),
 		TokenType:    spr.TokenType,
 		Scope:        spr.Scope,
 		Issuer:       "spotify",

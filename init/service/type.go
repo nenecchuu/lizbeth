@@ -3,11 +3,11 @@ package service
 import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/nenecchuu/arcana/mongo"
-	"github.com/nenecchuu/arcana/util"
 	"github.com/nenecchuu/lizbeth-be-core/config"
 
 	ah "github.com/nenecchuu/lizbeth-be-core/internal/app/auth/handler"
 	auc "github.com/nenecchuu/lizbeth-be-core/internal/app/auth/usecase"
+	"github.com/nenecchuu/lizbeth-be-core/internal/middleware/chatbot"
 
 	tr "github.com/nenecchuu/lizbeth-be-core/internal/app/token/repository"
 	ur "github.com/nenecchuu/lizbeth-be-core/internal/app/user/repository"
@@ -19,6 +19,9 @@ import (
 	sr "github.com/nenecchuu/lizbeth-be-core/internal/app/session/repository"
 	suc "github.com/nenecchuu/lizbeth-be-core/internal/app/session/usecase"
 
+	ph "github.com/nenecchuu/lizbeth-be-core/internal/app/player/handler"
+	puc "github.com/nenecchuu/lizbeth-be-core/internal/app/player/usecase"
+
 	"github.com/nenecchuu/lizbeth-be-core/internal/integration/spotify_api"
 	"github.com/nenecchuu/lizbeth-be-core/internal/integration/telegram_bot"
 )
@@ -26,7 +29,6 @@ import (
 type Infrastructure struct {
 	ChatbotModule *tgbotapi.BotAPI
 	Mongo         *mongo.Database
-	Snowflake     *util.POD
 }
 
 type Repositories struct {
@@ -39,9 +41,11 @@ type Usecases struct {
 	AuthUsecase    auc.AuthUsecase
 	ChoreUsecase   chuc.ChoreUsecase
 	SessionUsecase suc.SessionUsecase
+	PlayerUsecase  puc.PlayerUsecase
 }
 
 type Middlewares struct {
+	ChatbotMiddleware chatbot.ChatbotMiddleware
 }
 
 type RestHandlers struct {
@@ -52,6 +56,7 @@ type ChatbotHandlers struct {
 	AuthChatbotHandler    ah.AuthChatbotHandler
 	ChoreChatbotHandler   chh.ChoreChatbotHandler
 	SessionChatbotHandler sh.SessionChatbotHandler
+	PlayerChatbotHandler  ph.PlayerChatbotHandler
 }
 
 type RestService struct {
@@ -63,6 +68,7 @@ type RestService struct {
 }
 
 type ChatbotListenerService struct {
+	Middlewares    *Middlewares
 	Handlers       *ChatbotHandlers
 	Usecases       *Usecases
 	Infrastructure *Infrastructure

@@ -13,14 +13,10 @@ mongo:
   connectionTimeout: 10
   pingTimeout: 3
 
-snowflake:
-  epoch: 1626670674000
-  pod_id: 1
-
 spotify:
   credentials:
     scope: ""
-    callbackUrl: "http://localhost:8000/auth/callback"
+    authorizeCallbackUrl: "http://localhost:8000/auth/callback"
     clientId: ""
     clientSecret: ""
   coreApi:
@@ -29,6 +25,7 @@ spotify:
       timeout: 3
       retryCount: 3
     endpoints:
+      search: "search"
       queue_track: "me/player/queue"
       get_user_info: "me"
   authApi:

@@ -6,6 +6,11 @@ type SpotifyAuthorizeBodyReq struct {
 	Code        string `json:"code"`
 }
 
+type SpotifyRefreshTokenBodyReq struct {
+	RefreshToken string `json:"refresh_token"`
+	GrantType    string `json:"grant_type"`
+}
+
 type SpotifyAuthorizeBodyRes struct {
 	AccessToken  string `json:"access_token"`
 	RefreshToken string `json:"refresh_token"`
@@ -19,5 +24,12 @@ func (x *SpotifyAuthorizeBodyReq) ToMapString() map[string]string {
 		"redirect_uri": x.RedirectUri,
 		"grant_type":   x.GrantType,
 		"code":         x.Code,
+	}
+}
+
+func (x *SpotifyRefreshTokenBodyReq) ToMapString() map[string]string {
+	return map[string]string{
+		"refresh_token": x.RefreshToken,
+		"grant_type":    x.GrantType,
 	}
 }

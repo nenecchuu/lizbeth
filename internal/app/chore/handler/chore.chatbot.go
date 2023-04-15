@@ -4,11 +4,11 @@ import (
 	"context"
 
 	"github.com/nenecchuu/arcana/tracer"
-	gm "github.com/nenecchuu/lizbeth-be-core/internal/model"
+	cbm "github.com/nenecchuu/lizbeth-be-core/internal/model/chatbot"
 	"github.com/rs/zerolog/log"
 )
 
-func (x *ChatbotModule) HandleInitConversation(ci gm.ChatInfo) {
+func (x *ChatbotModule) HandleInitConversation(ci cbm.ChatInfo) {
 	ctx, span := tracer.StartSpan(context.Background(), "auth.chatbot.HandleLinkageCallback", nil)
 	defer span.End()
 
@@ -19,7 +19,7 @@ func (x *ChatbotModule) HandleInitConversation(ci gm.ChatInfo) {
 	}
 }
 
-func (x *ChatbotModule) HandleWelcome(ci gm.ChatInfo) {
+func (x *ChatbotModule) HandleWelcome(ci cbm.ChatInfo) {
 	ctx, span := tracer.StartSpan(context.Background(), "auth.chatbot.HandleLinkageCallback", nil)
 	defer span.End()
 

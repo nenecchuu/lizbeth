@@ -6,10 +6,10 @@ import (
 	"github.com/nenecchuu/lizbeth-be-core/internal/app/auth/model"
 	tm "github.com/nenecchuu/lizbeth-be-core/internal/app/token/model"
 	um "github.com/nenecchuu/lizbeth-be-core/internal/app/user/model"
-	gm "github.com/nenecchuu/lizbeth-be-core/internal/model"
+	cbm "github.com/nenecchuu/lizbeth-be-core/internal/model/chatbot"
 )
 
 type AuthUsecase interface {
-	ProcessHostAuthentication(ctx context.Context, ci gm.ChatInfo) error
+	ProcessHostAuthentication(ctx context.Context, ci cbm.ChatInfo) error
 	ProcessLinkageCallback(ctx context.Context, data *model.LinkageCallback) (*um.UserNoSqlSchema, *tm.TokenNoSqlSchema, error)
 }

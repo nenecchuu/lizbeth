@@ -4,11 +4,11 @@ import (
 	"context"
 
 	"github.com/nenecchuu/arcana/tracer"
-	gm "github.com/nenecchuu/lizbeth-be-core/internal/model"
+	cbm "github.com/nenecchuu/lizbeth-be-core/internal/model/chatbot"
 	"github.com/rs/zerolog/log"
 )
 
-func (x *ChatbotModule) HandleCreateSession(ci gm.ChatInfo) {
+func (x *ChatbotModule) HandleCreateSession(ci cbm.ChatInfo) {
 	ctx, span := tracer.StartSpan(context.Background(), "session.chatbot.HandleCreateSession", nil)
 	defer span.End()
 

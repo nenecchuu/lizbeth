@@ -1,6 +1,7 @@
 package telegram_listener
 
 import (
+	"context"
 	"fmt"
 	"strconv"
 
@@ -8,7 +9,7 @@ import (
 	"github.com/nenecchuu/lizbeth-be-core/handler/telegram_listener/router"
 	"github.com/nenecchuu/lizbeth-be-core/init/service"
 	"github.com/nenecchuu/lizbeth-be-core/internal/constants"
-	gm "github.com/nenecchuu/lizbeth-be-core/internal/model"
+	cbm "github.com/nenecchuu/lizbeth-be-core/internal/model/chatbot"
 	"github.com/rs/zerolog/log"
 )
 
@@ -47,6 +48,7 @@ func New(o *Opts) TelegramListenerHandler {
 }
 
 func (h *Handler) Run() {
+	ctx := context.Background()
 	if h.debugMode {
 		h.telegramBotApi.Debug = true
 
@@ -61,14 +63,14 @@ func (h *Handler) Run() {
 	for update := range updates {
 		if update.Message != nil { // If we got a message
 
-			ci := gm.ChatInfo{
+			ci := cbm.ChatInfo{
 				Channel:        constants.ChatbotChannelTelegram,
 				SenderFullName: fmt.Sprintf("%s %s", update.Message.Chat.FirstName, update.Message.Chat.LastName),
 				SenderId:       update.Message.Chat.UserName,
 				ChatId:         strconv.FormatInt(update.Message.Chat.ID, 10),
 				MessageId:      strconv.Itoa(update.Message.MessageID),
 			}
-			h.router.HandleMessage(update.Message.Text, ci)
+			h.router.HandleMessage(ctx, update.Message.Text, ci)
 
 		} else if update.CallbackQuery != nil {
 			// Respond to the callback query, telling Telegram to show the user
@@ -81,7 +83,7 @@ func (h *Handler) Run() {
 			}
 
 			if err == nil {
-				ci := gm.ChatInfo{
+				ci := cbm.ChatInfo{
 					Channel:        constants.ChatbotChannelTelegram,
 					SenderFullName: fmt.Sprintf("%s %s", update.CallbackQuery.Message.Chat.FirstName, update.CallbackQuery.Message.Chat.LastName),
 					SenderId:       update.CallbackQuery.Message.Chat.UserName,
@@ -89,7 +91,7 @@ func (h *Handler) Run() {
 					MessageId:      strconv.Itoa(update.CallbackQuery.Message.MessageID),
 				}
 
-				h.router.HandleMessage(update.CallbackQuery.Data, ci)
+				h.router.HandleMessage(ctx, update.CallbackQuery.Data, ci)
 			}
 		}
 	}

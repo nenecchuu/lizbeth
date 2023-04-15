@@ -26,7 +26,6 @@ func (i *Initiator) InitUsecase(cfg *config.MainConfig, infra *service.Infrastru
 		SessionRepository:  repos.SessionRepository,
 		ChatbotManager:     integration.TelegramBotManager,
 		SpotifyAuthApiCall: integration.SpotifyApiCall,
-		SnowflakeManager:   infra.Snowflake,
 	})
 
 	return &service.Usecases{

@@ -5,11 +5,11 @@ import (
 
 	"github.com/nenecchuu/arcana/tracer"
 	um "github.com/nenecchuu/lizbeth-be-core/internal/app/user/model"
-	gm "github.com/nenecchuu/lizbeth-be-core/internal/model"
+	cbm "github.com/nenecchuu/lizbeth-be-core/internal/model/chatbot"
 	"github.com/rs/zerolog/log"
 )
 
-func (x *Module) ProcessInitConversation(ctx context.Context, ci gm.ChatInfo) error {
+func (x *Module) ProcessInitConversation(ctx context.Context, ci cbm.ChatInfo) error {
 	ctx, span := tracer.StartSpan(ctx, "chore.uc.ProcessInitConversation", nil)
 	defer span.End()
 
@@ -45,7 +45,7 @@ func (x *Module) ProcessInitConversation(ctx context.Context, ci gm.ChatInfo) er
 	return nil
 }
 
-func (x *Module) ProcessWelcome(ctx context.Context, ci gm.ChatInfo) error {
+func (x *Module) ProcessWelcome(ctx context.Context, ci cbm.ChatInfo) error {
 	ctx, span := tracer.StartSpan(ctx, "chore.uc.ProcessWelcome", nil)
 	defer span.End()
 

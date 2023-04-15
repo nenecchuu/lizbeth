@@ -9,7 +9,7 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func (x *Module) SendSessionCreatedMessage(ctx context.Context, chat_id string, session_code int64) error {
+func (x *Module) SendSessionCreatedMessage(ctx context.Context, chat_id string, session_code string) error {
 	ctx, span := tracer.StartSpan(ctx, "chatbot.telegram.SendProcessInitConversationMessage", nil)
 	defer span.End()
 
@@ -18,7 +18,7 @@ func (x *Module) SendSessionCreatedMessage(ctx context.Context, chat_id string, 
 		err error
 	)
 
-	scm = fmt.Sprintf("Your session ID is: %d", session_code)
+	scm = fmt.Sprintf("Your session ID is: %s", session_code)
 	err = x.sendTextMessage(ctx, scm, chat_id)
 
 	if err != nil {

@@ -8,7 +8,7 @@ import (
 	tm "github.com/nenecchuu/lizbeth-be-core/internal/app/token/model"
 	um "github.com/nenecchuu/lizbeth-be-core/internal/app/user/model"
 	sam "github.com/nenecchuu/lizbeth-be-core/internal/integration/spotify_api/model"
-	gm "github.com/nenecchuu/lizbeth-be-core/internal/model"
+	cbm "github.com/nenecchuu/lizbeth-be-core/internal/model/chatbot"
 	"github.com/nenecchuu/lizbeth-be-core/internal/util"
 	"github.com/rs/zerolog/log"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -58,7 +58,7 @@ func (x *Module) ProcessLinkageCallback(ctx context.Context, data *model.Linkage
 	}
 
 	// STEP 2: GENERATE TOKEN TO SPOTIFY
-	ares, err = x.spotifyAuthApiCall.GenerateToken(ctx, data.ToSpotifyAuthorizeData())
+	ares, err = x.spotifyAuthApiCall.ObtainToken(ctx, data.ToSpotifyAuthorizeData())
 
 	if err != nil {
 		return nil, nil, err
@@ -96,19 +96,36 @@ func (x *Module) ProcessLinkageCallback(ctx context.Context, data *model.Linkage
 	return user, tdata, nil
 }
 
-func (x *Module) ProcessHostAuthentication(ctx context.Context, ci gm.ChatInfo) error {
+func (x *Module) ProcessHostAuthentication(ctx context.Context, ci cbm.ChatInfo) error {
 	ctx, span := tracer.StartSpan(ctx, "auth.uc.ProcessLinkageCallback", nil)
 	defer span.End()
 
 	var (
 		err   error
 		udata *um.UserNoSqlSchema
+		tdata *tm.TokenNoSqlSchema
 	)
 
 	udata, err = x.userRepository.FindUserByChatbotUserId(ctx, ci.SenderId, ci.Channel)
+	if err != nil {
+		log.Err(err).Msg(err.Error())
+		return err
+	}
+
+	tdata, err = x.tokenRepository.FindAndValidateTokenByUserId(ctx, udata.Id)
 
 	if err != nil {
 		log.Err(err).Msg(err.Error())
+		return err
+	}
+
+	if tdata == nil {
+		linkage_url := x.spotifyAuthApiCall.GenerateAuthorizeLink(ctx, udata.Id.Hex())
+		err = x.chatbotManager.SendInitializeLinkageMessage(ctx, ci.ChatId, linkage_url)
+
+		if err != nil {
+			log.Err(err).Msg(err.Error())
+		}
 		return err
 	}
 
@@ -119,16 +136,6 @@ func (x *Module) ProcessHostAuthentication(ctx context.Context, ci gm.ChatInfo) 
 			log.Err(err).Msg(err.Error())
 			return err
 		}
-	}
-
-	if udata.SpotifyData == um.NilUserSpotifyDataNoSqlSchema {
-		linkage_url := x.spotifyAuthApiCall.GenerateAuthorizeLink(ctx, udata.Id.Hex())
-		err = x.chatbotManager.SendInitializeLinkageMessage(ctx, ci.ChatId, linkage_url)
-
-		if err != nil {
-			log.Err(err).Msg(err.Error())
-		}
-		return err
 	}
 
 	if udata.ActiveSessionId == primitive.NilObjectID {

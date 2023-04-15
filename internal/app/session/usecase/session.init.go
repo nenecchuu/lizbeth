@@ -1,7 +1,6 @@
 package usecase
 
 import (
-	"github.com/nenecchuu/arcana/util"
 	sr "github.com/nenecchuu/lizbeth-be-core/internal/app/session/repository"
 	ur "github.com/nenecchuu/lizbeth-be-core/internal/app/user/repository"
 	"github.com/nenecchuu/lizbeth-be-core/internal/integration/spotify_api"
@@ -13,7 +12,6 @@ type Module struct {
 	userRepository     ur.UserRepository
 	spotifyAuthApiCall spotify_api.SpotifyApiCallIntegration
 	chatbotManager     telegram_bot.TelegramBotIntegration
-	snowflakeManager   *util.POD
 }
 
 type Opts struct {
@@ -21,7 +19,6 @@ type Opts struct {
 	SessionRepository  sr.SessionRepository
 	SpotifyAuthApiCall spotify_api.SpotifyApiCallIntegration
 	ChatbotManager     telegram_bot.TelegramBotIntegration
-	SnowflakeManager   *util.POD
 }
 
 func New(o Opts) *Module {
@@ -30,6 +27,5 @@ func New(o Opts) *Module {
 		userRepository:     o.UserRepository,
 		spotifyAuthApiCall: o.SpotifyAuthApiCall,
 		chatbotManager:     o.ChatbotManager,
-		snowflakeManager:   o.SnowflakeManager,
 	}
 }

@@ -1,9 +1,9 @@
 package handler
 
 import (
-	gm "github.com/nenecchuu/lizbeth-be-core/internal/model"
+	cbm "github.com/nenecchuu/lizbeth-be-core/internal/model/chatbot"
 )
 
 type SessionChatbotHandler interface {
-	HandleCreateSession(ci gm.ChatInfo)
+	HandleCreateSession(ci cbm.ChatInfo)
 }
