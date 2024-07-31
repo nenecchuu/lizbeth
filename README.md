@@ -1,4 +1,4 @@
-# (DISCONTINUED) Lizbeth - Telegram App for Spotify Jam Session
+# (DISCONTINUED) Lizbeth - Telegram App for Spotify Listening Session
 
 Lizbeth is a Telegram bot developed to provide a collaborative music listening experience using Spotify. Lizbeth aimed to allow users to collaboratively listen to music and share their favorite tracks in real time via Telegram.
 
