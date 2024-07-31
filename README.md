@@ -27,8 +27,8 @@ Spotify now provides a native feature for shared listening sessions directly wit
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/nenecchuu/lizbeth-be-core.git
-   cd lizbeth-be-core
+   git clone https://github.com/nenecchuu/lizbeth.git
+   cd lizbeth
    ```
 
 2. Set up environment variables:
